@@ -1,0 +1,9 @@
+{
+  "name": "ai-passport-timetable-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local-only Chinese font generation for AI Passport timetables",
+  "dependencies": {
+    "lv_font_conv": "1.5.3"
+  }
+}

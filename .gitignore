@@ -1,0 +1,35 @@
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+.vscode/
+.idea/
+
+# Generated repository-local links; canonical skill sources live in skills/.
+/.agents/skills/passport-develop
+/.agents/skills/passport-setup
+/.agents/skills/passport-build
+/.agents/skills/passport-device-test
+/.agents/skills/passport-debug
+# Personal course data and device records must stay local.
+/private/
+/main/timetable_data.c
+/assets/fonts/course_font_*.c
+/assets/fonts/course_glyphs.h
+__pycache__/
+
+node_modules/
+*.ics
+!examples/timetable.ics
+*.csv
+!partitions.csv
+!examples/timetable.csv
+*.bin
+*.elf
+*.map
+*.log
+.env
+.env.*
+*.pem
+*.key
+*.p12
