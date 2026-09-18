@@ -12,6 +12,33 @@
 `25add0044cb3e8ce2319c258ae96551f0ffcc2df`。
 代码采用 [MIT 协议](LICENSE)，随附 Noto 中文字体采用 [SIL OFL](assets/fonts/OFL.txt)。
 
+## 仓库文件说明
+
+只想安装课程表时，下载页面顶部链接中的 Windows EXE 即可。下面的目录主要供查看源码、修改功能和自行打包使用；点击目录说明可继续查看每个文件的用途。
+
+GitHub 文件列表右侧显示的是该文件或目录的最近一次提交说明，较长的文字会被截断。它不是固定的文件简介；完整用途请看下表和各目录中的 README。
+
+| 目录或文件 | 用途 |
+| --- | --- |
+| [desktop/](desktop/README.zh_CN.md) | Windows 安装助手：导入与预览个人课表、检测设备、烧录和同步时间。 |
+| [main/](main/README.zh_CN.md) | 设备上运行的程序：每日课程、课程详情、日期切换、工具菜单及字库加载。 |
+| [components/bsp/](components/bsp/) | AI Passport 硬件驱动与板级接口，供程序调用屏幕、按键等设备能力。 |
+| [examples/](examples/README.zh_CN.md) | 可复制的 CSV 和 ICS 课表模板，内容均为虚构示例。 |
+| [tools/](tools/README.zh_CN.md) | 从源码转换课表、生成字体、编译、打包 EXE、校验固件及调试设备的工具。 |
+| [tests/](tests/README.zh_CN.md) | 自动化测试：课表解析、数据封装、日期计算和安装流程保护。 |
+| [assets/](assets/) | 字体、字体许可和应用使用的静态资源。 |
+| [docs/](docs/README.zh_CN.md) | 操作说明、硬件资料、开发约定及发布流程。 |
+| [.github/](.github/) | GitHub 自动检查流程，以及问题反馈、贡献和安全说明。 |
+| [skills/](skills/README.zh_CN.md) | 供 AI 开发助手使用的开发、编译、调试及设备测试工作指南。 |
+| [CMakeLists.txt](CMakeLists.txt) / [sdkconfig.defaults](sdkconfig.defaults) | ESP-IDF 工程入口与默认编译配置；普通 EXE 用户无需修改。 |
+| [partitions.csv](partitions.csv) | Flash 分区地址与大小，决定原厂区域、启动选择和课程表固件的存放位置。 |
+| [dependencies.lock](dependencies.lock) | ESP-IDF 组件版本锁定，帮助开发者复现依赖环境。 |
+| [package.json](package.json) / [pnpm-lock.yaml](pnpm-lock.yaml) | 字体转换等开发工具的 Node.js 依赖及锁定版本。 |
+| [Sync-Time.cmd](Sync-Time.cmd) / [Configure-WiFi.cmd](Configure-WiFi.cmd) / [Switch-To-Courses.cmd](Switch-To-Courses.cmd) | 源码工作流的 Windows 快捷入口，分别用于 USB 校时、配置 Wi-Fi、切回课表；需要相应 Python 环境。 |
+| [AGENTS.md](AGENTS.zh_CN.md) / [CLAUDE.md](CLAUDE.zh_CN.md) | 给 AI 编程助手看的项目规则与文档入口。 |
+| [.gitignore](.gitignore) / [.gitattributes](.gitattributes) | Git 忽略规则与文本处理约定，避免个人课表和构建产物误入源码仓库。 |
+| [LICENSE](LICENSE) | 本项目代码的 MIT 开源许可；字体许可单独列在字体目录。 |
+
 ## 在本地转换课表
 
 Windows 图形界面版见[安装助手说明](docs/windows-installer.zh_CN.md)：

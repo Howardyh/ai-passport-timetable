@@ -14,6 +14,33 @@ Based on [FoloToy/ai-passport](https://github.com/FoloToy/ai-passport), commit
 `25add0044cb3e8ce2319c258ae96551f0ffcc2df`. Code uses the [MIT license](LICENSE);
 the bundled Noto CJK font uses [SIL OFL](assets/fonts/OFL.txt).
 
+## Repository map
+
+To install a timetable, download the Windows EXE linked above. The directories below are for reading the source, modifying features and building your own package. Each linked directory guide explains its individual files.
+
+GitHub's file list shows the most recent commit message for each file or directory and truncates long messages. That column is not a permanent file description; use this table and the directory READMEs for complete explanations.
+
+| Directory or file | Purpose |
+| --- | --- |
+| [desktop/](desktop/README.md) | Windows installer: calendar import and preview, device detection, flashing and clock synchronization. |
+| [main/](main/README.md) | Device application: daily lessons, lesson details, date navigation, tools and font loading. |
+| [components/bsp/](components/bsp/) | AI Passport drivers and board interfaces for the display, buttons and other hardware. |
+| [examples/](examples/README.md) | Reusable CSV and ICS templates containing fictional lessons only. |
+| [tools/](tools/README.md) | Source-workflow utilities for calendar conversion, fonts, compilation, EXE packaging, image checks and device debugging. |
+| [tests/](tests/README.md) | Automated checks for calendar parsing, data bundles, date calculations and installation safeguards. |
+| [assets/](assets/) | Fonts, font licenses and static application resources. |
+| [docs/](docs/README.md) | User instructions, hardware references, development conventions and release procedures. |
+| [.github/](.github/) | GitHub automated checks, issue templates, contribution and security information. |
+| [skills/](skills/README.md) | Development, build, debugging and device-test guidance for AI coding assistants. |
+| [CMakeLists.txt](CMakeLists.txt) / [sdkconfig.defaults](sdkconfig.defaults) | ESP-IDF project entry point and default build settings; EXE users do not need to edit these. |
+| [partitions.csv](partitions.csv) | Flash addresses and sizes for factory regions, boot selection and the timetable application. |
+| [dependencies.lock](dependencies.lock) | Locked ESP-IDF component versions for reproducible dependencies. |
+| [package.json](package.json) / [pnpm-lock.yaml](pnpm-lock.yaml) | Node.js development dependencies, including font conversion tools, and their locked versions. |
+| [Sync-Time.cmd](Sync-Time.cmd) / [Configure-WiFi.cmd](Configure-WiFi.cmd) / [Switch-To-Courses.cmd](Switch-To-Courses.cmd) | Windows shortcuts for the source workflow: USB clock sync, Wi-Fi configuration and timetable boot selection; require the corresponding Python environment. |
+| [AGENTS.md](AGENTS.md) / [CLAUDE.md](CLAUDE.md) | Project rules and documentation entry points for AI coding assistants. |
+| [.gitignore](.gitignore) / [.gitattributes](.gitattributes) | Git exclusion and text handling rules that help keep personal calendars and generated files out of the source repository. |
+| [LICENSE](LICENSE) | MIT license for project code; fonts have their own license in the font directory. |
+
 ## Local conversion
 
 For the standalone Windows GUI, see the [Windows installer guide](docs/windows-installer.md).
