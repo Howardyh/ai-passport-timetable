@@ -2,6 +2,9 @@
 
 # AI Passport Timetable
 
+[Download the Windows installer (preview)](https://github.com/Howardyh/ai-passport-timetable/releases/tag/v0.1.0-windows-installer)
+· [Windows guide](docs/windows-installer.md)
+
 An offline daily timetable for FoloToy AI Passport (ESP32-C3, 8 MB). Browse
 lessons and details, change dates, set the clock over USB, or optionally use
 Wi-Fi time synchronization. Compatible factory firmware remains available
@@ -12,6 +15,9 @@ Based on [FoloToy/ai-passport](https://github.com/FoloToy/ai-passport), commit
 the bundled Noto CJK font uses [SIL OFL](assets/fonts/OFL.txt).
 
 ## Local conversion
+
+For the standalone Windows GUI, see the [Windows installer guide](docs/windows-installer.md).
+It imports, previews and flashes calendars locally without an end-user development environment.
 
 Requires Python 3.10+, Node.js 20+, pnpm 10 and **ESP-IDF 5.5.3** to compile.
 Install pnpm if needed with `npm install --global pnpm@10.17.1`.

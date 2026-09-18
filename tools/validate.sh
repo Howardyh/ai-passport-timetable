@@ -37,6 +37,7 @@ run_static_checks() {
         tests/test_timetable.c main/timetable.c -o "${test_dir}/test_timetable"
     "${test_dir}/test_timetable"
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_template.py
+    PYTHONDONTWRITEBYTECODE=1 python3 tests/test_desktop.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_import_timetable.py
     PYTHONDONTWRITEBYTECODE=1 python3 tests/test_device_boot.py
     "${CC:-cc}" -std=c11 -Wall -Wextra -Werror -Icomponents/bsp/src \

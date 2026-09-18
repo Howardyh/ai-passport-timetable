@@ -28,7 +28,11 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
+#ifdef PASSPORT_DESKTOP_TEMPLATE
+#include "desktop_bundle.h"
+#else
 #include "../assets/fonts/course_glyphs.h"
+#endif
 
 LV_FONT_DECLARE(course_font_14);
 LV_FONT_DECLARE(course_font_16);
@@ -411,16 +415,30 @@ static void process_key(const message_t *msg) {
 }
 
 static void status(void) {
-    char buf[320];
+    char buf[440];
     snprintf(buf,sizeof(buf),"COURSE STATUS {\"version\":\"1.0\",\"epoch\":%lld,\"time_valid\":%s,\"day\":%ld,\"lessons\":%u,\"selected\":%u,\"page\":%d,\"battery\":%d,\"wifi\":%d,\"free_heap\":%u,\"largest_block\":%u,\"total_events\":%u}",
         (long long)time(NULL),s_valid_time ? "true" : "false",(long)s_day,(unsigned)s_count,(unsigned)s_selected,s_page,s_soc,s_wifi_status,
         (unsigned)esp_get_free_heap_size(),(unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT),(unsigned)timetable_count);
+    size_t length=strlen(buf);
+    if(length && buf[length-1]=='}')
+        snprintf(buf+length-1,sizeof(buf)-length+1,",\"source\":\"%.64s\"}",timetable_source_hash);
     serial_line(buf);
 }
 
 static void font_check(void) {
     const lv_font_t *fonts[]={&course_font_14,&course_font_16,&course_font_20};
     int missing=0;
+#ifdef PASSPORT_DESKTOP_TEMPLATE
+    for(unsigned f=0;f<3;f++) {
+        const uint8_t *header=desktop_blob+desktop_u32(desktop_blob+56+f*4);
+        uint32_t count=desktop_u32(header),records=desktop_u32(header+4);
+        for(uint32_t i=0;i<count;i++) {
+            lv_font_glyph_dsc_t desc={0};
+            if(!lv_font_get_glyph_dsc(fonts[f],&desc,desktop_u32(desktop_blob+records+i*20),0) || desc.is_placeholder) ++missing;
+        }
+    }
+    ESP_LOGI(TAG,"Desktop font coverage: %s",missing ? "FAIL" : "PASS");
+#else
     for (unsigned f=0; f<3; f++) {
         for (size_t i=0; i<sizeof(course_glyphs)/sizeof(course_glyphs[0]); i++) {
             lv_font_glyph_dsc_t desc={0};
@@ -432,6 +450,7 @@ static void font_check(void) {
         if (lv_font_get_glyph_dsc(fonts[f],&negative,0x9F98,0) && !negative.is_placeholder) ++missing;
     }
     ESP_LOGI(TAG,"Font coverage: %s (%u glyphs, 3 sizes)",missing ? "FAIL" : "PASS",(unsigned)(sizeof(course_glyphs)/sizeof(course_glyphs[0])));
+#endif
 }
 
 static bool s_capturing;
@@ -473,6 +492,9 @@ static void screenshot(void) {
 }
 
 void app_main(void) {
+#ifdef PASSPORT_DESKTOP_TEMPLATE
+    if(!desktop_bundle_init()) { ESP_LOGE(TAG,"Invalid desktop timetable bundle"); return; }
+#endif
     setenv("TZ","CST-8",1); tzset();
     s_queue=xQueueCreate(12,sizeof(message_t));
     if (!s_queue) return;

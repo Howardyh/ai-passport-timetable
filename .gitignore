@@ -33,3 +33,5 @@ node_modules/
 *.pem
 *.key
 *.p12
+/dist/
+*.exe

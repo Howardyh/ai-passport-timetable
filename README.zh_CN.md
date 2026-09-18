@@ -2,6 +2,9 @@
 
 # AI Passport 个人课程表
 
+[下载 Windows 安装助手（预览版）](https://github.com/Howardyh/ai-passport-timetable/releases/tag/v0.1.0-windows-installer)
+· [图形界面使用说明](docs/windows-installer.zh_CN.md)
+
 为 FoloToy AI Passport（ESP32-C3、8 MB）开发的离线课程表，支持每日课程、
 课程详情、日期切换、USB 校时与可选 Wi-Fi 校时。分区兼容时保留原厂程序，通过启动切换使用。
 
@@ -10,6 +13,9 @@
 代码采用 [MIT 协议](LICENSE)，随附 Noto 中文字体采用 [SIL OFL](assets/fonts/OFL.txt)。
 
 ## 在本地转换课表
+
+Windows 图形界面版见[安装助手说明](docs/windows-installer.zh_CN.md)：
+选择课表、预览、一键烧录，使用者无需安装开发环境。
 
 需要 Python 3.10+、Node.js 20+、pnpm 10，编译需要 **ESP-IDF 5.5.3**。
 没有 pnpm 时执行 `npm install --global pnpm@10.17.1`。

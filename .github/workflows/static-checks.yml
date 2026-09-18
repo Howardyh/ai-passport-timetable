@@ -28,4 +28,8 @@ jobs:
           echo "ACTIONLINT_BIN=${actionlint_bin}" >> "$GITHUB_ENV"
 
       - name: Validate repository and run host tests
-        run: ./tools/validate.sh --static
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        run: |
+          python3 -m pip install Pillow==12.3.0 fonttools==4.60.0
+          ./tools/validate.sh --static

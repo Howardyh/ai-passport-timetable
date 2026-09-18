@@ -12,6 +12,16 @@
 
 ## Unreleased
 
+## v0.1.0-windows-installer - 2026-09-18
+
+- First Windows x64 standalone installer preview: import and preview ICS/CSV, save a fictional CSV template, select a device and install locally without a development environment.
+- Bundle the firmware template, Chinese font generator and serial tools; personalize course data offline and verify image checksums before writing.
+- Check chip, flash capacity, security settings and original partition compatibility; verify writes before switching boot selection and confirming the calendar identity and clock.
+- Preserve compatible factory partitions. Distribute an EXE rather than a merged full-flash image.
+- Device display and physical installation acceptance for this new template remain unverified; this release is a preview.
+
+## Upstream baseline notes (inherited)
+
 - Added the supplied 80-byte CW2017 profile for the specified 520 mAh cell, including content/update-flag checks, verified writes, the required restart sequence, and bounded SOC-readiness polling.
 
 - Expanded the environment bootstrap document: added Espressif's Git service mirror (`git.espressif.com.cn`) as the preferred mainland-China route for ESP-IDF v5.5.3 and its submodules, documented submodule long-wait/timeout handling, in-place repair, and the pinned-commit shallow fetch for large submodules such as `esp32-wifi-lib`, warned about stale per-repository Jihulab `insteadOf` residue, and added the official offline release archive as a last-resort fallback (learned from `esp-mosaico/esp-mosaico-vibe`).

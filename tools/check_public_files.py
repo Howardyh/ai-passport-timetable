@@ -13,7 +13,7 @@ def forbidden(name):
         return True
     if str(path) == 'main/timetable_data.c' or path.name.startswith('course_font_') or path.name == 'course_glyphs.h':
         return True
-    if path.suffix in {'.bin', '.elf', '.map', '.log', '.pem', '.key', '.p12'}:
+    if path.suffix in {'.bin', '.elf', '.map', '.log', '.pem', '.key', '.p12', '.exe'}:
         return True
     if path.name == '.env' or path.name.startswith('.env.'):
         return True
