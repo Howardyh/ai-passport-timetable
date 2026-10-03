@@ -144,7 +144,7 @@ class VendoredDocumentationTest(unittest.TestCase):
 
     def test_first_party_symlink_into_vendored_directory_remains_checked(self) -> None:
         target = self.document("components/vendor_audio/README.md")
-        link = self.root / "README.md"
+        link = self.root / "guide.md"
         self.symlink(link, target)
         self.assertEqual(len(self.document_errors([link])), 2)
 
