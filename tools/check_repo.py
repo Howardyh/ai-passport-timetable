@@ -32,6 +32,7 @@ ROOT_MARKDOWN_ALLOWLIST = {
     "CLAUDE.md",
     "CLAUDE.zh_CN.md",
     "README.md",
+    "README.en.md",
     "README.zh_CN.md",
 }
 # Register only concrete, vendored component directories, e.g. "components/foo".
@@ -207,7 +208,7 @@ def check_community_document_links(files: list[Path], errors: list[str]) -> None
 def check_document_languages(
     files: list[Path], errors: list[str], vendored_roots: tuple[Path, ...] = ()
 ) -> None:
-    """Require an English default and a linked Simplified Chinese peer."""
+    """Check the Chinese root landing and the usual English/Chinese doc pairs."""
     markdown = {
         path for path in files
         if path.suffix.lower() == ".md" and not is_vendored_document(path, vendored_roots)
@@ -217,6 +218,27 @@ def check_document_languages(
         name = path.name
         text = path.read_text(encoding="utf-8")
         opening = "\n".join(text.splitlines()[:8])
+
+        if path.parent == ROOT and name in {"README.md", "README.en.md", "README.zh_CN.md"}:
+            english = name == "README.en.md"
+            peer = "README.md" if english else "README.en.md"
+            targets = MARKDOWN_LINK_RE.findall(opening) + HTML_LINK_RE.findall(opening)
+            if ROOT / peer not in markdown:
+                errors.append(f"{name}: missing root README language peer {peer}")
+            elif peer not in targets:
+                errors.append(f"{name}: missing top language link to {peer}")
+            if english:
+                if CJK_RE.search(text.replace("简体中文", "")):
+                    errors.append(f"{name}: English README must use English prose")
+            elif not CJK_RE.search("\n".join(text.splitlines()[1:]).replace("简体中文", "")):
+                errors.append(f"{name}: root README must use Simplified Chinese prose")
+            if name == "README.md" and ROOT / "README.zh_CN.md" not in markdown:
+                errors.append("README.md: missing compatibility mirror README.zh_CN.md")
+            if name == "README.zh_CN.md":
+                canonical = ROOT / "README.md"
+                if canonical not in markdown or path.read_bytes() != canonical.read_bytes():
+                    errors.append("README.zh_CN.md: must match the canonical README.md")
+            continue
 
         if name.endswith(".zh_CN.md"):
             default_name = f"{name[:-len('.zh_CN.md')]}.md"

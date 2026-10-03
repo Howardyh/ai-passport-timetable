@@ -8,6 +8,8 @@ These rules apply equally to human contributors and AI agents. Documentation is 
 
 ## Language and file layout
 
+The root landing README is an explicit exception: `README.md` is Simplified Chinese, `README.en.md` is English, and `README.zh_CN.md` is an identical compatibility mirror of `README.md`. Chinese pages link to `README.en.md`; the English page links to `README.md`. Keep all three synchronized. The rules below apply to all other maintained documents. Root READMEs still undergo link, sensitive-content, and conflict checks.
+
 - English is mandatory at every maintained default Markdown path: `name.md`.
 - Simplified Chinese is provided at the paired path `name.zh_CN.md`.
 - Both files begin with reciprocal language links. Keep their headings, facts, examples, safety warnings, and links aligned in the same change.

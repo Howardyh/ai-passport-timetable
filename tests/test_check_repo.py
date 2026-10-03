@@ -337,5 +337,84 @@ class CommunityDocumentLinksTest(unittest.TestCase):
         self.assertIn("language switch must use a Markdown link", output.getvalue())
 
 
+
+class RootReadmeLanguageTest(unittest.TestCase):
+    def setUp(self) -> None:
+        temporary = tempfile.TemporaryDirectory(prefix="passport-readme-tests-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        patcher = patch.object(CHECKS, "ROOT", self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def document(self, name: str, text: str) -> Path:
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+        return path
+
+    def readmes(self) -> list[Path]:
+        chinese = "**简体中文** · [English](README.en.md)\n\n# 中文项目\n"
+        return [
+            self.document("README.md", chinese),
+            self.document("README.zh_CN.md", chinese),
+            self.document("README.en.md", "[简体中文](README.md) · **English**\n\n# Project\n"),
+        ]
+
+    def errors(self, files: list[Path]) -> list[str]:
+        errors: list[str] = []
+        CHECKS.check_document_languages(files, errors)
+        return errors
+
+    def test_chinese_landing_english_and_compatibility_mirror(self) -> None:
+        self.assertEqual(self.errors(self.readmes()), [])
+        self.assertIn("README.en.md", CHECKS.ROOT_MARKDOWN_ALLOWLIST)
+
+    def test_missing_english_readme_is_rejected(self) -> None:
+        errors = self.errors(self.readmes()[:2])
+        self.assertTrue(any("missing root README language peer README.en.md" in e for e in errors))
+
+    def test_wrong_language_target_is_rejected(self) -> None:
+        files = self.readmes()
+        self.document("README.en.md", "[简体中文](README.zh_CN.md)\n# Project\n")
+        self.assertTrue(any("missing top language link to README.md" in e for e in self.errors(files)))
+
+    def test_mirror_drift_and_missing_mirror_are_rejected(self) -> None:
+        files = self.readmes()
+        self.document("README.zh_CN.md", files[1].read_text(encoding="utf-8") + "内容变更\n")
+        self.assertTrue(any("must match the canonical" in e for e in self.errors(files)))
+        self.assertTrue(any("missing compatibility mirror" in e for e in self.errors([files[0], files[2]])))
+
+    def test_english_readme_cannot_contain_chinese_prose(self) -> None:
+        files = self.readmes()
+        self.document("README.en.md", "[简体中文](README.md)\n# 中文正文\n")
+        self.assertTrue(any("English README must use English prose" in e for e in self.errors(files)))
+
+    def test_default_landing_requires_chinese_prose(self) -> None:
+        files = self.readmes()
+        english = "**简体中文** · [English](README.en.md)\n\n# Project\n"
+        self.document("README.md", english)
+        self.document("README.zh_CN.md", english)
+        self.assertTrue(any("root README must use Simplified Chinese prose" in e for e in self.errors(files)))
+
+    def test_nested_readmes_keep_existing_english_default(self) -> None:
+        files = [
+            self.document("docs/README.md", "[简体中文](README.zh_CN.md)\n# Guide\n"),
+            self.document("docs/README.zh_CN.md", "[English](README.md)\n# 指南\n"),
+        ]
+        self.assertEqual(self.errors(files), [])
+        self.document("docs/README.md", "[English](README.en.md)\n# 中文正文\n")
+        self.assertTrue(any("default Markdown must use English prose" in e for e in self.errors(files)))
+
+    def test_root_readmes_still_receive_link_and_secret_checks(self) -> None:
+        files = self.readmes()
+        self.document("README.md", files[0].read_text(encoding="utf-8") + "[Broken](missing.md)\n" + "ghp_" + "A" * 24 + "\n")
+        errors: list[str] = []
+        CHECKS.check_markdown_links(files, errors)
+        CHECKS.check_sensitive_content(files, errors)
+        self.assertTrue(any("missing link target" in e for e in errors))
+        self.assertTrue(any("possible GitHub token" in e for e in errors))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,12 +1,17 @@
-<p align="right"><strong>简体中文</strong> · <a href="README.md">English</a></p>
+<p align="right"><strong>简体中文</strong> · <a href="README.en.md">English</a></p>
 
 # AI Passport 个人课程表
 
-[下载 Windows 安装助手（预览版）](https://github.com/Howardyh/ai-passport-timetable/releases/tag/v0.1.0-windows-installer)
+[📥 下载 Windows 安装助手（预览版）](https://github.com/Howardyh/ai-passport-timetable/releases/tag/v0.1.0-windows-installer)
 · [图形界面使用说明](docs/windows-installer.zh_CN.md)
 
-为 FoloToy AI Passport（ESP32-C3、8 MB）开发的离线课程表，支持每日课程、
-课程详情、日期切换、USB 校时与可选 Wi-Fi 校时。分区兼容时保留原厂程序，通过启动切换使用。
+📅 **把每天的课表带在身边。** 这是为 FoloToy AI Passport（ESP32-C3、8 MB）开发的离线课程表，
+从电脑上的课表文件到设备上的每日安排，让查看课程更方便。
+
+- 📚 **离线查看课程**：浏览每日课程与详情，按键切换日期。
+- 🖥️ **在本地准备课表**：Windows 安装助手支持导入、预览、设备检测和烧录，无需安装开发环境。
+- ⏱️ **按需同步时间**：通过 USB 同步电脑时间，也可选择 Wi-Fi 校时。
+- 🔄 **切换原厂程序**：分区兼容时保留原厂程序，通过独立启动选项使用。
 
 基于 [FoloToy/ai-passport](https://github.com/FoloToy/ai-passport)，上游版本
 `25add0044cb3e8ce2319c258ae96551f0ffcc2df`。
